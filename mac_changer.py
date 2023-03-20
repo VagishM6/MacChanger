@@ -1,7 +1,6 @@
 import subprocess
 
-# user = input("Enter user Name: ")
-print("Welcome Mr.Vagish...")
+print("Welcome User...")
 command = input('Enter MAC Address: ')
 network_interface = input("Enter Network Interface to Change: ")
 
