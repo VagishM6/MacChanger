@@ -1,11 +1,16 @@
 import subprocess
-import socket
+import optparse
 
-user = input("User Name > ")
-print(f"Welcome {format(user)}...")
+parser = optparse.OptionParser()
+parser.add_option("-i", "--interface", dest="interface", help="input the interface name")
+parser.add_option("-m", "--mac", dest="mac_address", help="enter the MAC address to change")
+(options, args) = parser.parse_args()
 
-command = input('Enter MAC Address > ')
-network_interface = input("Enter Network Interface to change > ")
+# Usage
+# python3 mac_changer_original.py -i [interface name] -m [MAC address]
+
+command = options.mac_address
+network_interface = options.interface
 
 interface_list = ["eth0", "wlan0"]
 
@@ -24,14 +29,23 @@ class Change_Mac():
         elif network_interface_input not in interface_list:
             print("[-] Provided interface is Invalid")
         else:
-            subprocess.call(f"ifconfig {format(network_interface_input)} down", shell=True)
-            subprocess.call(f"ifconfig {format(network_interface_input)} hw ether {format(mac_input)}", shell=True)
-            subprocess.call(f"ifconfig {format(network_interface_input)} up", shell=True)
+            # subprocess.call(f"ifconfig {format(network_interface_input)} down", shell=True)
+            # subprocess.call(f"ifconfig {format(network_interface_input)} hw ether {format(mac_input)}", shell=True)
+            # subprocess.call(f"ifconfig {format(network_interface_input)} up", shell=True)
+
+            subprocess.call(["ifconfig", network_interface_input, "down"])
+            subprocess.call(["ifconfig", network_interface_input, "hw", "ether", mac_input])
+            subprocess.call(["ifconfig", network_interface_input, "up"])
+
             print(f'[+] MAC Address Changed to {format(mac_input)}, for network interface: ' + network_interface_input)
 
+
 class Main():
-    run_command = Change_Mac()
-    run_command.change_mac(command, network_interface)
+    try:
+        run_command = Change_Mac()
+        run_command.change_mac(command, network_interface)
+    except:
+        print("Required Arguments not provided")
 
 
 if __name__ == '__main__':
