@@ -6,9 +6,6 @@ parser.add_option("-i", "--interface", dest="interface", help="input the interfa
 parser.add_option("-m", "--mac", dest="mac_address", help="enter the MAC address to change")
 (options, args) = parser.parse_args()
 
-# Usage
-# python3 mac_changer_original.py -i [interface name] -m [MAC address]
-
 command = options.mac_address
 network_interface = options.interface
 
