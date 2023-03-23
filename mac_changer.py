@@ -1,20 +1,21 @@
 import subprocess
 import optparse
 
-parser = optparse.OptionParser()
-parser.add_option("-i", "--interface", dest="interface", help="input the interface name")
-parser.add_option("-m", "--mac", dest="mac_address", help="enter the MAC address to change")
-(options, args) = parser.parse_args()
-
-command = options.mac_address
-network_interface = options.interface
-
-interface_list = ["eth0", "wlan0"]
+# Usage
+# python3 mac_changer_original.py -i [interface name] -m [MAC address]
 
 
 class Change_Mac():
     def __int__(self):
         pass
+
+    def welcome_user(self):
+        user_name = input("User Name > ")
+        return print("Welcome " + user_name)
+
+    def get_list(self):
+        interface_list = ["eth0", "wlan0"]
+        return interface_list
 
     def change_mac(self, mac_input, network_interface_input):
         if len(mac_input) < 17:
@@ -23,7 +24,7 @@ class Change_Mac():
             print("[-] entered characters are greater than 17")
         elif network_interface_input == "":
             print("[-] Network Interface Device has not been provided")
-        elif network_interface_input not in interface_list:
+        elif network_interface_input not in self.get_list():
             print("[-] Provided interface is Invalid")
         else:
             # subprocess.call(f"ifconfig {format(network_interface_input)} down", shell=True)
@@ -36,11 +37,23 @@ class Change_Mac():
 
             print(f'[+] MAC Address Changed to {format(mac_input)}, for network interface: ' + network_interface_input)
 
+    def get_arguments(self):
+        parser = optparse.OptionParser()
+        parser.add_option("-i", "--interface", dest="interface", help="input the interface name")
+        parser.add_option("-m", "--mac", dest="mac_address", help="enter the MAC address to change")
+        return parser.parse_args()
+
 
 class Main():
     try:
         run_command = Change_Mac()
+
+        (options, args) = run_command.get_arguments()
+        command = options.mac_address
+        network_interface = options.interface
+
         run_command.change_mac(command, network_interface)
+        run_command.get_arguments()
     except:
         print("Required Arguments not provided")
 
