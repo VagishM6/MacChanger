@@ -1,17 +1,16 @@
 import subprocess
 import optparse
+import re
 
 # Usage
 # python3 mac_changer_original.py -i [interface name] -m [MAC address]
+
+# interface_list = ["eth0", "wlan0"]
 
 
 class Change_Mac():
     def __int__(self):
         pass
-
-    def welcome_user(self):
-        user_name = input("User Name > ")
-        return print("Welcome " + user_name)
 
     def get_list(self):
         interface_list = ["eth0", "wlan0"]
@@ -45,17 +44,26 @@ class Change_Mac():
 
 
 class Main():
-    try:
-        run_command = Change_Mac()
 
-        (options, args) = run_command.get_arguments()
-        command = options.mac_address
-        network_interface = options.interface
+        try:
+            run_command = Change_Mac()
+            (options, args) = run_command.get_arguments()
+            command = options.mac_address
+            network_interface = options.interface
 
-        run_command.change_mac(command, network_interface)
-        run_command.get_arguments()
-    except:
-        print("Required Arguments not provided")
+            run_command.change_mac(command, network_interface)
+
+            check_out = subprocess.check_output(["ifconfig", options.interface])
+            # print(check_out)
+            result = re.search(r"\w\w:\w\w:\w\w:\w\w:\w\w:\w\w", check_out.decode("utf-8"))
+            # print("Result: " + result.group(0))
+
+            if result.group(0) == options.mac_address:
+                print("< MAC address successfully changed >")
+            else:
+                print("MAC address has not been changed...")
+        except:
+            print("Required Arguments not provided")
 
 
 if __name__ == '__main__':
