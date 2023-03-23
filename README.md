@@ -1,5 +1,5 @@
 # MacChanger
-A python script that can be used to change the MAC address of a given network interface card.
+A python script that can be used to change the MAC address of a given network interface card of linux systems.
 
 ## Used modules
 - subprocess
