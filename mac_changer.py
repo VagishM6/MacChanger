@@ -5,8 +5,6 @@ import re
 # Usage
 # python3 mac_changer_original.py -i [interface name] -m [MAC address]
 
-# interface_list = ["eth0", "wlan0"]
-
 
 class Change_Mac():
     def __int__(self):
